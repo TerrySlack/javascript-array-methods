@@ -1,0 +1,3 @@
+/*
+    Create a filter function that usese function currying
+*/

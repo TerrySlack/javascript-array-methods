@@ -1,0 +1,20 @@
+{
+  "name": "@cube-planning/technical-assignment-js",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cube-planning/technical-assignment-js.git"
+  },
+  "author": "@cube-planning/addons-team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cube-planning/technical-assignment-js/issues"
+  },
+  "homepage": "https://github.com/cube-planning/technical-assignment-js#readme",
+  "devDependencies": {
+    "jest": "^29.6.4"
+  }
+}
