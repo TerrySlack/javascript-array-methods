@@ -38,4 +38,13 @@ describe("section 1", () => {
       )([{ num: 1 }, { num: 2 }, { num: 3 }])
     ).toEqual({ total: 11 });
   });
+
+  it("Test for an array of objects, with an initial numeric value", () => {
+    expect(
+      reduce((a, v) => {
+        a += v.num;
+        return a;
+      }, 5)([{ num: 1 }, { num: 2 }, { num: 3 }])
+    ).toBe(11);
+  });
 });
