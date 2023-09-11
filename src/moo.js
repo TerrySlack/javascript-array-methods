@@ -1,4 +1,4 @@
-const { reduce } = require("./section-1");
+const { filter } = require("./section-2");
 
 //NOTE:  REVIEW THE EDGE CASES AND WRITES TESTS FOR THEM AS WELL
 
@@ -11,12 +11,7 @@ const { reduce } = require("./section-1");
 //expected output 9
 
 //Test with an array of objects
-console.log(
-  reduce((a, v) => {
-    a.num += v.num;
-    return a;
-  })([{ num: 1 }, { num: 2 }, { num: 3 }])
-);
+console.log(filter((x) => x !== "a")(["a", "b", "c", "d"]));
 //expected output { num: 6 }
 
 //Test with an array of objects with an initial value
