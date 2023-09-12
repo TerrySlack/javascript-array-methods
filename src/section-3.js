@@ -1,113 +1,61 @@
-/*
-    NOTE:  
-        Need to re-use the custom filter and/or reduce.
-        How can I use reduce if it's not left to right.
+const { filter } = require("./section-2");
+const { reduce } = require("./section-1");
 
+exports.reduceRight = (...args) => {
+  /*
+    Let's ensure that all arguements that are not functions are removed.
+    Then reverse the intermediate array, in order to call the functions from right to left;
 
-    use arr.revers() in my reduce.  This will let me re-use it.
+    This could have been done with the reduce function.
+  */
 
-    Use this example.  Let's me pass in all parameters for the cb, as well as reversing the array of functions
-    https://stackoverflow.com/questions/49581657/reduceright-with-reduce
+  //Check if the args array is empty.  Throw a type error
+  if (args.length === 0) {
+    throw new TypeError("Parameters were not passed into reduceRight.");
+  }
 
-    NOTE:  DON'T USE REVERS IN THE CUSTOM REDUCE
-    INSTEAD, REVERSE THE ...REST PARAMS ARRAY IN THE THIRD SECIONT AND PASS THAT TO REDUCE.
+  const rtlFunctions = filter((arg) => arg instanceof Function)(args).reverse();
 
-    HOW DO I RE-USE FILTER?
-      PASS IN THE ARRAY AND RETRIEVE THE OBJECT BASED ON MY INPUT
-         IE:  X.SOMEKEY === "SOME KEY"
-         
-*/
+  //Check if the args array is empty.  Throw a type error
+  if (rtlFunctions.length === 0) {
+    throw new TypeError(
+      "Although parameters were passed in, none of them were functions.  You need at least one function passed into reduceRight."
+    );
+  }
 
-
-/*
-  Rember to use arr.revers() to ensure that the functions are called right -> left
-  As an edge case, consider filtering the params to ensure that only functions are called.
- */
-
-
-
-const fn = (x, y) => {
-  console.log(`
-          fn  x: ${x} y: ${y}
-          value :${x + y}
-      `);
-  return x + y;
-};
-
-const fn2 = (x, y) => {
-  console.log(`
-          fn2  x: ${x} y: ${y}
-          value :${x + y}
-      `);
-  return x + y;
-};
-
-const fn3 = (x, y) => {
-  console.log(`
-          fn3  x: ${x} y: ${y}
-          value :${x + y}
-      `);
-  return x + y;
-};
-
-/*
-    I want each element pushed into the functions.
-
-    This way I have each function grabbing the elements.  Same?
-*/
-const m1 = (...args) => {
   return (arr) => {
-    return args.reduceRight((acc, fn) => {
-      arr.forEach((element) => {
-        acc = fn(acc, element);
+    /*
+      Need a store, in order to keep track of objects that have been processed, as well as totals, which is the expected return.
+      Doing it this way, let's us iterate once through the array, without having to compare values against the array each time.
+
+      NOTE:  In the readme.md, requirements for section-3 states:  "...Should create a new array that consolidates the elements by object key";
+      However, where the expected output is written, it displays an object.  I went with the expected output and in the acc, below, totals represents the object returned.
+
+      From the readme, above the requirements
+        Produces the following output:
+
+        ```js
+              {
+                1: 45,
+                2: 24
+              }
+        ```
+    */
+    const acc = { store: {}, totals: {} };
+
+    //Re-use the reduce function
+    const { totals } = reduce((acc, element, i, arrCopy) => {
+      //Iterate through the rtl functions over the element.
+      rtlFunctions.forEach((fn) => {
+        //Ensure that all parameters expected are passed to the callback, as at this point, it's uknown what the functions want for parameters
+
+        //Use the returning acc for each function call.
+        acc = fn.call(null, acc, element, i, arrCopy);
       });
       return acc;
-    }, 0);
+    }, acc)(arr);
+
+    //Return the totals property from the acc.  Could have also just returned acc.store, as acc is passed by reference.
+    return totals;
   };
 };
-
-const m2 = (...args) => {
-  return (arr) => {
-    let value = 0;
-    arr.forEach((element) => {
-      value += args.reduceRight((acc, fn) => {
-        acc = fn(acc, element);
-        return acc;
-      }, 0);
-    });
-
-    return value;
-  };
-};
-
-//Test Array -> move this to where it's execukted
-const testArray = [1];
-const results1 = m1(fn, fn2, fn3)(testArray);
-const results2 = m2(fn, fn2, fn3)(testArray);
-
-//results1: ${JSON.stringify(results1)}
-console.log(`
-results1: ${JSON.stringify(results1)}
-results2: ${JSON.stringify(results2)}
-`);
-
-// const m2 = (...args) => {
-//   //const args = Array.from(rest);
-//   console.log(`
-//   args is array ${Array.isArray(args)}
-//   args type ${typeof args}
-//   args length ${args.length}
-//   args is
-//   ${JSON.stringify(args)}
-
-//   args[4] is ${typeof args[4]}
-
-//    args[4]()  ${args[4]()}
-//   `);
-
-//   args[4]();
-// };
-
-// m2("Hello", 1, 2, 3, () => {
-//   return 1;
-// });
