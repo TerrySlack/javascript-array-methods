@@ -1,9 +1,3 @@
-/*
-    Create a filter function that usese function currying
-*/
-
-//callBack.call(null, arrElement, i, arrCopy);
-
 //Create a filter function that uses function currying
 
 exports.filter = (callBack, thisArg) => {
@@ -46,13 +40,12 @@ exports.filter = (callBack, thisArg) => {
     //and use that going forward.
     const arrCopy = [...arr];
 
-    //If an initial value is  passed and the array is not empty, start on the first [0] element
     let i = 0;
     const length = arrLength - 1;
     const accumulator = [];
 
     while (i <= length) {
-      const arrElement = arr[i];
+      const arrElement = arrCopy[i];
 
       //Ensure that all parameters expected are passed to the callback
       //Note:  thisArg, is an optional parameter.  It will not work on arrow functions.  I'm adding it to ensure that if a non arrow function is passed it, that the
