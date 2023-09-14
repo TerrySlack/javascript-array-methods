@@ -55,7 +55,7 @@ exports.reduce = (callBack, initialValue) => {
     }
 
     //Accumulator:  If the initial value is present, use it, otherwise, use the first element of the incoming array
-    let accumulator = initialValue ? initialValue : arr[0];
+    let accumulator = initialValue ? initialValue : arrCopy[0];
 
     //If an initial value is  passed and the array is not empty, start on the first [0] element
     let i = initialValue ? 0 : 1;

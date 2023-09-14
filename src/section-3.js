@@ -2,17 +2,17 @@ const { filter } = require("./section-2");
 const { reduce } = require("./section-1");
 
 exports.reduceRight = (...args) => {
+  //Check if the args array is empty.  Throw a type error
+  if (args.length === 0) {
+    throw new TypeError("Parameters were not passed into reduceRight.");
+  }
+
   /*
     Let's ensure that all arguements that are not functions are removed.
     Then reverse the intermediate array, in order to call the functions from right to left;
 
     This could have been done with the reduce function.
   */
-
-  //Check if the args array is empty.  Throw a type error
-  if (args.length === 0) {
-    throw new TypeError("Parameters were not passed into reduceRight.");
-  }
 
   const rtlFunctions = filter((arg) => arg instanceof Function)(args).reverse();
 
